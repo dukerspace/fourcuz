@@ -13,7 +13,6 @@ A Pomodoro Technique-based task management application built with a modern monor
 ├── packages/
 │   ├── shared/       # Shared types, utilities, and constants
 │   └── ui/           # Shared UI component library (@fourcuz/ui)
-├── openspec/         # Specification documents
 ├── package.json      # Root workspace configuration
 ├── turbo.json        # Turbo monorepo configuration
 └── tsconfig.base.json
