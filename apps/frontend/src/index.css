@@ -1,0 +1,49 @@
+@import 'tailwindcss';
+
+@config "../tailwind.config.js";
+
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  body {
+    @apply m-0 p-0 font-sans antialiased min-h-screen;
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+      'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    background: linear-gradient(135deg, #065f46 0%, #047857 50%, #059669 100%);
+    @apply text-gray-50 transition-colors duration-300 leading-relaxed;
+  }
+
+  .dark body {
+    background: linear-gradient(135deg, #022c22 0%, #065f46 50%, #047857 100%);
+    @apply text-gray-100;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+
+  button {
+    @apply cursor-pointer border-0 outline-none;
+    font-family: inherit;
+  }
+
+  input,
+  textarea {
+    font-family: inherit;
+    @apply outline-none;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+  }
+}

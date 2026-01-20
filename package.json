@@ -1,0 +1,28 @@
+{
+  "name": "fourkcuz",
+  "version": "0.1.0",
+  "description": "Pomodoro task management app",
+  "private": true,
+  "packageManager": "bun@1.0.0",
+  "scripts": {
+    "dev": "bun run --filter '*' dev",
+    "dev:frontend": "bun run --filter @fourcuz/frontend dev",
+    "dev:api": "bun run --filter api dev",
+    "build": "bun run --filter '*' build",
+    "lint": "bun run --filter '*' lint",
+    "type-check": "bun run --filter '*' type-check",
+    "clean": "bun run --filter '*' clean"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^8.53.0",
+    "@typescript-eslint/parser": "^8.53.0",
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0",
+    "typescript": "^5.3.3"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}
