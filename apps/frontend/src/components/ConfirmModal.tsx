@@ -64,7 +64,7 @@ export default function ConfirmModal({
             className={`px-6 py-3 rounded-lg font-medium text-base cursor-pointer transition-all border-none ${
               variant === 'danger'
                 ? 'bg-red-500 text-white hover:bg-red-600 disabled:opacity-50 disabled:cursor-not-allowed'
-                : 'bg-emerald-400 text-white hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed'
+                : 'bg-emerald-600 text-white dark:bg-emerald-400 hover:bg-emerald-700 dark:hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed'
             }`}
             onClick={onConfirm}
           >

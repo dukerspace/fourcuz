@@ -133,7 +133,7 @@ export default function TaskEditModal({ task, onClose, onSave }: TaskEditModalPr
             {t('common.cancel')}
           </button>
           <button
-            className="px-6 py-3 rounded-lg font-semibold cursor-pointer transition-all bg-emerald-400 text-white border-none hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="px-6 py-3 rounded-lg font-semibold cursor-pointer transition-all bg-emerald-600 text-white dark:bg-emerald-400 border-none hover:bg-emerald-700 dark:hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleSave}
             disabled={!title.trim()}
           >

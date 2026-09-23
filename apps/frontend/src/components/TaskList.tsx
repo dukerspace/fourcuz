@@ -27,7 +27,7 @@ export default function TaskList({
       </div>
       <div className="flex flex-col gap-3 max-h-[500px] overflow-y-auto">
         {tasks.length === 0 ? (
-          <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-8 text-gray-600 dark:text-gray-400">
             <p className="text-lg">{t('tasks.noActiveTasks')}</p>
           </div>
         ) : (

@@ -176,7 +176,7 @@ export default function FocusTimeGoal({ tasks, workDuration }: FocusTimeGoalProp
             />
             <button
               onClick={handleGoalSave}
-              className="px-2 py-1 text-xs bg-emerald-400 text-white rounded hover:bg-emerald-500 transition-colors"
+              className="px-2 py-1 text-xs bg-emerald-600 text-white dark:bg-emerald-400 rounded hover:bg-emerald-700 dark:hover:bg-emerald-500 transition-colors"
             >
               ✓
             </button>
@@ -232,7 +232,7 @@ export default function FocusTimeGoal({ tasks, workDuration }: FocusTimeGoalProp
 
         <div className="grid grid-cols-7 gap-1">
           {weekDays.map((day) => (
-            <div key={day} className="text-center text-xs text-gray-500 dark:text-gray-400 py-1">
+            <div key={day} className="text-center text-xs text-gray-600 dark:text-gray-400 py-1">
               {day}
             </div>
           ))}
@@ -295,7 +295,7 @@ export default function FocusTimeGoal({ tasks, workDuration }: FocusTimeGoalProp
                       ? 'text-red-500 font-semibold'
                       : hasFocusTime
                         ? 'text-gray-700 dark:text-gray-300'
-                        : 'text-gray-400 dark:text-gray-600'
+                        : 'text-gray-600 dark:text-gray-600'
                   }`}
                 >
                   {date.getDate()}

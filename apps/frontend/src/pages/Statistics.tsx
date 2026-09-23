@@ -524,11 +524,11 @@ export default function Statistics() {
   }) => (
     <div className="bg-white/98 dark:bg-[rgba(30,30,46,0.95)] rounded-[20px] p-6 md:p-8 lg:p-10 shadow-[0_2px_16px_rgba(0,0,0,0.08),0_1px_4px_rgba(0,0,0,0.04)] border border-black/4 dark:border-white/8 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_4px_24px_rgba(0,0,0,0.1),0_2px_8px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_4px_24px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.25)]">
       <div className="text-4xl md:text-5xl mb-3 md:mb-4">{icon}</div>
-      <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-emerald-400 mb-1 md:mb-2">
+      <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-emerald-700 dark:text-emerald-400 mb-1 md:mb-2">
         {value}
       </div>
       {subtitle && (
-        <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-1">{subtitle}</div>
+        <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-1">{subtitle}</div>
       )}
       <div className="text-sm md:text-base text-gray-600 dark:text-gray-400 uppercase tracking-wide">
         {label}
@@ -554,7 +554,7 @@ export default function Statistics() {
               </button>
             )}
           <button
-            className="px-4 md:px-6 py-2 md:py-3 bg-white text-emerald-400 rounded-lg font-medium text-sm md:text-base cursor-pointer transition-all border-2 border-white hover:bg-white/90 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)]"
+            className="px-4 md:px-6 py-2 md:py-3 bg-white text-emerald-700 rounded-lg font-medium text-sm md:text-base cursor-pointer transition-all border-2 border-white hover:bg-white/90 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)]"
             onClick={handleExport}
           >
             📥 {t('common.export')}
@@ -593,12 +593,12 @@ export default function Statistics() {
         />
         <div className="bg-white/98 dark:bg-[rgba(30,30,46,0.95)] rounded-[20px] p-6 md:p-8 shadow-[0_2px_16px_rgba(0,0,0,0.08),0_1px_4px_rgba(0,0,0,0.04)] border border-black/4 dark:border-white/8 text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_4px_24px_rgba(0,0,0,0.1),0_2px_8px_rgba(0,0,0,0.06)] dark:hover:shadow-[0_4px_24px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.25)]">
           <div className="text-4xl md:text-5xl mb-3 md:mb-4">🏷️</div>
-          <div className="text-lg md:text-xl font-semibold text-emerald-400 mb-1 truncate">
+          <div className="text-lg md:text-xl font-semibold text-emerald-700 dark:text-emerald-400 mb-1 truncate">
             {stats.topProjectId
               ? getProjectName(stats.topProjectId)
               : t('statistics.noProjectData')}
           </div>
-          <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mb-1">
+          <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-1">
             {stats.topProjectId
               ? `${stats.topProjectCount} • ${formatPercent(stats.topProjectShare)}`
               : '-'}

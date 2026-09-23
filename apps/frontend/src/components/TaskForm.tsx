@@ -76,7 +76,7 @@ export default function TaskForm({ onTaskCreated }: TaskFormProps) {
     <>
       {!isOpen ? (
         <button
-          className="py-2 px-4 bg-[#34d399] text-white rounded-lg font-medium transition-all duration-200 border-none cursor-pointer hover:bg-[#10b981] hover:-translate-y-0.5"
+          className="py-2 px-4 bg-emerald-600 text-white dark:bg-emerald-400 rounded-lg font-medium transition-all duration-200 border-none cursor-pointer hover:bg-emerald-700 dark:hover:bg-emerald-500 hover:-translate-y-0.5"
           onClick={() => setIsOpen(true)}
         >
           + {t('tasks.createTask')}
@@ -152,7 +152,7 @@ export default function TaskForm({ onTaskCreated }: TaskFormProps) {
                       </select>
                       <button
                         type="button"
-                        className="w-9 h-9 rounded-lg bg-[#34d399] text-white border-none text-xl font-semibold cursor-pointer flex items-center justify-center transition-all duration-200 flex-shrink-0 hover:bg-[#10b981] hover:-translate-y-0.5"
+                        className="w-9 h-9 rounded-lg bg-emerald-600 text-white dark:bg-emerald-400 border-none text-xl font-semibold cursor-pointer flex items-center justify-center transition-all duration-200 flex-shrink-0 hover:bg-emerald-700 dark:hover:bg-emerald-500 hover:-translate-y-0.5"
                         onClick={(e) => {
                           e.preventDefault()
                           setShowCreateProject(true)
@@ -181,7 +181,7 @@ export default function TaskForm({ onTaskCreated }: TaskFormProps) {
                       <div className="flex gap-2">
                         <button
                           type="button"
-                          className="py-1.5 px-3 rounded-md text-sm font-medium border-none cursor-pointer transition-all duration-200 bg-[#34d399] text-white hover:bg-[#10b981] disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="py-1.5 px-3 rounded-md text-sm font-medium border-none cursor-pointer transition-all duration-200 bg-emerald-600 text-white dark:bg-emerald-400 hover:bg-emerald-700 dark:hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={handleCreateProject}
                           disabled={!newProjectName.trim()}
                         >
@@ -214,7 +214,7 @@ export default function TaskForm({ onTaskCreated }: TaskFormProps) {
               </button>
               <button
                 type="submit"
-                className="py-2 px-4 rounded-lg font-medium transition-all duration-200 bg-[#34d399] text-white hover:bg-[#10b981] disabled:opacity-50 disabled:cursor-not-allowed"
+                className="py-2 px-4 rounded-lg font-medium transition-all duration-200 bg-emerald-600 text-white dark:bg-emerald-400 hover:bg-emerald-700 dark:hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={!title.trim()}
               >
                 {t('common.create')}

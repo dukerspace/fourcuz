@@ -9,6 +9,7 @@
     "dev:frontend": "bun run --filter @fourcuz/frontend dev",
     "dev:api": "bun run --filter api dev",
     "build": "bun run --filter '*' build",
+    "deploy:frontend": "bun run --filter @fourcuz/frontend deploy",
     "lint": "bun run --filter '*' lint",
     "type-check": "bun run --filter '*' type-check",
     "clean": "bun run --filter '*' clean"

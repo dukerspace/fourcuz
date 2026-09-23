@@ -2,9 +2,11 @@ import { formatTimeFromSeconds } from '@shared/utils'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { usePomodoroTimer } from '../contexts/PomodoroContext'
+import { useTheme } from '../hooks/useTheme'
 
 export default function CompactTimer() {
   const { t } = useTranslation()
+  const { theme } = useTheme()
   const { state, start, pause } = usePomodoroTimer()
 
   // Show timer if:
@@ -34,13 +36,14 @@ export default function CompactTimer() {
   }
 
   const getTypeColor = () => {
+    const isLight = theme === 'light'
     switch (state.type) {
       case 'work':
-        return '#34d399'
+        return isLight ? '#047857' : '#34d399'
       case 'shortBreak':
-        return '#f6ad55'
+        return isLight ? '#b45309' : '#f6ad55'
       case 'longBreak':
-        return '#48bb78'
+        return isLight ? '#047857' : '#48bb78'
     }
   }
 
@@ -91,7 +94,7 @@ export default function CompactTimer() {
             </div>
           </div>
           <button
-            className="bg-emerald-400 text-white border-none rounded-md w-6 h-6 max-md:w-5 max-md:h-5 flex items-center justify-center cursor-pointer text-xs max-md:text-[0.65rem] transition-all flex-shrink-0 hover:opacity-90 hover:scale-105 active:scale-95"
+            className="bg-emerald-600 dark:bg-emerald-400 text-white border-none rounded-md w-6 h-6 max-md:w-5 max-md:h-5 flex items-center justify-center cursor-pointer text-xs max-md:text-[0.65rem] transition-all flex-shrink-0 hover:opacity-90 hover:scale-105 active:scale-95"
             style={{ backgroundColor: timerColor } as React.CSSProperties}
             onClick={handleToggle}
           >

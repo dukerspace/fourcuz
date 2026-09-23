@@ -111,7 +111,7 @@ export default function PomodoroRecordsTimeline({
               {timeSlots.map((hour) => (
                 <div
                   key={hour}
-                  className="text-xs text-gray-500 dark:text-gray-400 text-center truncate"
+                  className="text-xs text-gray-600 dark:text-gray-400 text-center truncate"
                 >
                   {hour % 2 === 0 ? `${hour}:00` : ''}
                 </div>

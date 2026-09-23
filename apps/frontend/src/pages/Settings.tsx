@@ -120,7 +120,7 @@ export default function Settings() {
         />
         <span
           className={`absolute cursor-pointer top-0 left-0 right-0 bottom-0 transition-all duration-300 rounded-full ${
-            checked ? 'bg-[#34d399]' : 'bg-gray-300 dark:bg-gray-600'
+            checked ? 'bg-emerald-600 dark:bg-emerald-400' : 'bg-gray-300 dark:bg-gray-600'
           }`}
         ></span>
         <span
@@ -259,7 +259,7 @@ export default function Settings() {
           {t('settings.resetToDefaults')}
         </button>
         <button
-          className="w-full sm:w-auto py-3 md:py-3 px-6 md:px-8 bg-[#34d399] text-white border-none rounded-lg text-sm md:text-base font-semibold cursor-pointer transition-all duration-200 min-h-[44px] touch-manipulation hover:bg-[#10b981] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(52,211,153,0.4)] active:translate-y-0"
+          className="w-full sm:w-auto py-3 md:py-3 px-6 md:px-8 bg-emerald-600 text-white dark:bg-emerald-400 border-none rounded-lg text-sm md:text-base font-semibold cursor-pointer transition-all duration-200 min-h-[44px] touch-manipulation hover:bg-emerald-700 dark:hover:bg-emerald-500 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(52,211,153,0.4)] active:translate-y-0"
           onClick={() => saveSettings(settings)}
         >
           {t('settings.saveSettings')}
@@ -291,7 +291,7 @@ export default function Settings() {
       </div>
       <div className="flex justify-end pt-4 md:pt-6 mt-4 md:mt-6 border-t-2 border-gray-200 dark:border-gray-700">
         <button
-          className="w-full sm:w-auto py-3 md:py-3 px-6 md:px-8 bg-[#34d399] text-white border-none rounded-lg text-sm md:text-base font-semibold cursor-pointer transition-all duration-200 min-h-[44px] touch-manipulation hover:bg-[#10b981] hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(52,211,153,0.4)] active:translate-y-0"
+          className="w-full sm:w-auto py-3 md:py-3 px-6 md:px-8 bg-emerald-600 text-white dark:bg-emerald-400 border-none rounded-lg text-sm md:text-base font-semibold cursor-pointer transition-all duration-200 min-h-[44px] touch-manipulation hover:bg-emerald-700 dark:hover:bg-emerald-500 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(52,211,153,0.4)] active:translate-y-0"
           onClick={() => saveSettings(settings)}
         >
           Save Settings
@@ -321,7 +321,7 @@ export default function Settings() {
               <span className="text-sm md:text-base text-gray-900 dark:text-gray-100 font-medium">
                 {t('settings.theme')}
               </span>
-              <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <span className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-1">
                 {t('settings.themeDescription')}
               </span>
             </div>
@@ -385,7 +385,7 @@ export default function Settings() {
               <span className="text-sm md:text-base text-gray-900 dark:text-gray-100 font-medium">
                 {t('settings.clearLocalData')}
               </span>
-              <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <span className="text-xs md:text-sm text-gray-600 dark:text-gray-400 mt-1">
                 {t('settings.clearLocalDataDescription')}
               </span>
             </div>
@@ -450,7 +450,7 @@ export default function Settings() {
         <aside className="w-full lg:w-[240px] flex-shrink-0 bg-white/98 dark:bg-[rgba(30,30,46,0.95)] rounded-[16px] md:rounded-[20px] py-3 md:py-6 lg:py-7 shadow-[0_2px_16px_rgba(0,0,0,0.08),0_1px_4px_rgba(0,0,0,0.04)] dark:shadow-[0_2px_16px_rgba(0,0,0,0.3),0_1px_4px_rgba(0,0,0,0.2)] border border-black/5 dark:border-white/8 h-fit lg:sticky lg:top-8 transition-all duration-300">
           <nav className="flex flex-row gap-1 px-2 md:px-3 lg:px-4 overflow-x-auto lg:flex-col lg:overflow-x-visible scrollbar-hide">
             <button
-              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-[#34d399] lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'general' ? 'bg-[rgba(52,211,153,0.15)] text-[#34d399] font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
+              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-emerald-700 dark:hover:text-emerald-400 lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'general' ? 'bg-[rgba(52,211,153,0.15)] text-emerald-700 dark:text-emerald-400 font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
               onClick={() => setActiveTab('general')}
             >
               <span className="text-lg md:text-xl w-5 md:w-6 text-center lg:text-2xl flex-shrink-0">
@@ -459,7 +459,7 @@ export default function Settings() {
               <span className="flex-1 lg:flex">{t('settings.general')}</span>
             </button>
             <button
-              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-[#34d399] lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'pomodoro' ? 'bg-[rgba(52,211,153,0.15)] text-[#34d399] font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
+              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-emerald-700 dark:hover:text-emerald-400 lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'pomodoro' ? 'bg-[rgba(52,211,153,0.15)] text-emerald-700 dark:text-emerald-400 font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
               onClick={() => setActiveTab('pomodoro')}
             >
               <span className="text-lg md:text-xl w-5 md:w-6 text-center lg:text-2xl flex-shrink-0">
@@ -468,7 +468,7 @@ export default function Settings() {
               <span className="flex-1 lg:flex">{t('settings.pomodoro')}</span>
             </button>
             <button
-              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-[#34d399] lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'alarm' ? 'bg-[rgba(52,211,153,0.15)] text-[#34d399] font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
+              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-emerald-700 dark:hover:text-emerald-400 lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'alarm' ? 'bg-[rgba(52,211,153,0.15)] text-emerald-700 dark:text-emerald-400 font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
               onClick={() => setActiveTab('alarm')}
             >
               <span className="text-lg md:text-xl w-5 md:w-6 text-center lg:text-2xl flex-shrink-0">
@@ -477,7 +477,7 @@ export default function Settings() {
               <span className="flex-1 lg:flex">{t('settings.alarm')}</span>
             </button>
             <button
-              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-[#34d399] lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'account' ? 'bg-[rgba(52,211,153,0.15)] text-[#34d399] font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
+              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-emerald-700 dark:hover:text-emerald-400 lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'account' ? 'bg-[rgba(52,211,153,0.15)] text-emerald-700 dark:text-emerald-400 font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
               onClick={() => setActiveTab('account')}
             >
               <span className="text-lg md:text-xl w-5 md:w-6 text-center lg:text-2xl flex-shrink-0">
@@ -486,7 +486,7 @@ export default function Settings() {
               <span className="flex-1 lg:flex">{t('settings.account')}</span>
             </button>
             <button
-              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-[#34d399] lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'premium' ? 'bg-[rgba(52,211,153,0.15)] text-[#34d399] font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
+              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-emerald-700 dark:hover:text-emerald-400 lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'premium' ? 'bg-[rgba(52,211,153,0.15)] text-emerald-700 dark:text-emerald-400 font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
               onClick={() => setActiveTab('premium')}
             >
               <span className="text-lg md:text-xl w-5 md:w-6 text-center lg:text-2xl flex-shrink-0">
@@ -495,7 +495,7 @@ export default function Settings() {
               <span className="flex-1 lg:flex">{t('settings.premium')}</span>
             </button>
             <button
-              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-[#34d399] lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'about' ? 'bg-[rgba(52,211,153,0.15)] text-[#34d399] font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
+              className={`flex items-center gap-2 md:gap-3 px-3 md:px-4 py-2.5 md:py-3 border-none bg-transparent rounded-lg cursor-pointer transition-all duration-200 text-left text-gray-700 dark:text-gray-300 text-sm md:text-[0.95rem] hover:bg-[rgba(52,211,153,0.12)] hover:text-emerald-700 dark:hover:text-emerald-400 lg:hover:translate-x-0.5 min-h-[44px] touch-manipulation ${activeTab === 'about' ? 'bg-[rgba(52,211,153,0.15)] text-emerald-700 dark:text-emerald-400 font-semibold' : ''} whitespace-nowrap flex-shrink-0`}
               onClick={() => setActiveTab('about')}
             >
               <span className="text-lg md:text-xl w-5 md:w-6 text-center lg:text-2xl flex-shrink-0">

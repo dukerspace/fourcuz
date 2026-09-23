@@ -127,7 +127,7 @@ export default function ProjectTimeDistribution({
               onClick={() => setFilter(f)}
               className={`px-3 py-1 text-xs rounded-lg transition-colors ${
                 filter === f
-                  ? 'bg-emerald-400 text-white'
+                  ? 'bg-emerald-600 text-white dark:bg-emerald-400'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
@@ -138,7 +138,7 @@ export default function ProjectTimeDistribution({
       </div>
 
       {projectData.entries.length === 0 ? (
-        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+        <div className="text-center py-8 text-gray-600 dark:text-gray-400">
           {t('common.noDataAvailable')}
         </div>
       ) : (

@@ -200,7 +200,7 @@ export default function FocusTimeChart({
             onClick={() => setFilter(f)}
             className={`px-3 py-1.5 text-xs rounded-lg transition-colors whitespace-nowrap ${
               filter === f
-                ? 'bg-emerald-400 text-white'
+                ? 'bg-emerald-600 text-white dark:bg-emerald-400'
                 : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
             }`}
           >

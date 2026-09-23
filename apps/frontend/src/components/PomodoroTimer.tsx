@@ -65,7 +65,7 @@ export default function PomodoroTimer({
     <div className="bg-white/98 dark:bg-[rgba(30,30,46,0.95)] rounded-[20px] p-6 md:p-8 lg:p-10 shadow-[0_2px_16px_rgba(0,0,0,0.08),0_1px_4px_rgba(0,0,0,0.04)] border border-black/4 dark:border-white/8 text-center max-w-[400px] w-full transition-all duration-300">
       {/* Selected Task Info / Hint / Warning - Top */}
       {state.selectedTaskId && (
-        <div className="my-4 p-3 bg-emerald-400/10 rounded-lg text-emerald-400 text-sm">
+        <div className="my-4 p-3 bg-emerald-400/10 rounded-lg text-emerald-700 dark:text-emerald-400 text-sm">
           <div className="flex justify-between items-center gap-3">
             <div className="flex items-center gap-2 flex-1 min-w-0">
               <span className="text-base flex-shrink-0">✓</span>
@@ -75,7 +75,7 @@ export default function PomodoroTimer({
               </span>
             </div>
             <button
-              className="flex-shrink-0 w-6 h-6 rounded-full border-none bg-emerald-400/20 text-emerald-400 text-sm font-semibold cursor-pointer transition-all flex items-center justify-center leading-none hover:bg-emerald-500/30 hover:scale-110 active:scale-95"
+              className="flex-shrink-0 w-6 h-6 rounded-full border-none bg-emerald-400/20 text-emerald-700 dark:text-emerald-400 text-sm font-semibold cursor-pointer transition-all flex items-center justify-center leading-none hover:bg-emerald-500/30 hover:scale-110 active:scale-95"
               onClick={() => setSelectedTaskId(null)}
               title={t('pomodoro.deselectTask')}
             >
@@ -101,7 +101,7 @@ export default function PomodoroTimer({
       {state.type === 'work' && (
         <div className="mb-6 p-4 bg-emerald-500/5 rounded-xl">
           <div className="mb-3">
-            <span className="block text-lg font-semibold text-emerald-400 mb-1">
+            <span className="block text-lg font-semibold text-emerald-700 dark:text-emerald-400 mb-1">
               {t('pomodoro.round')} {currentRound} {t('pomodoro.of')} {maxRounds}
             </span>
           </div>
@@ -132,19 +132,19 @@ export default function PomodoroTimer({
         >
           {state.type === 'longBreak' ? (
             <>
-              <div className="text-xl font-bold mb-1 text-emerald-600">
+              <div className="text-xl font-bold mb-1 text-emerald-700 dark:text-emerald-500">
                 {t('pomodoro.longBreak')}
               </div>
-              <div className="text-sm text-gray-600 mb-2">
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 {t('pomodoro.longBreak')} - {state.settings.longBreakDuration} {t('common.minutes')}
               </div>
             </>
           ) : (
             <>
-              <div className="text-xl font-bold mb-1 text-amber-500">
+              <div className="text-xl font-bold mb-1 text-amber-700 dark:text-amber-500">
                 {t('pomodoro.shortBreak')}
               </div>
-              <div className="text-sm text-gray-600 mb-2">
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
                 {t('pomodoro.shortBreak')} - {state.settings.shortBreakDuration}{' '}
                 {t('common.minutes')}
               </div>
@@ -157,7 +157,7 @@ export default function PomodoroTimer({
         <button
           className={`px-5 py-2.5 rounded-[10px] font-medium border transition-all duration-250 max-md:px-3.5 max-md:py-2 max-md:text-sm ${
             state.type === 'work'
-              ? 'bg-emerald-400 text-white border-emerald-400 shadow-[0_2px_8px_rgba(52,211,153,0.3)]'
+              ? 'bg-emerald-600 text-white border-emerald-600 dark:bg-emerald-400 dark:border-emerald-400 shadow-[0_2px_8px_rgba(52,211,153,0.3)]'
               : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-transparent dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-[#2d2d44] hover:border-emerald-400/20 dark:hover:border-emerald-400/30 hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed'
           }`}
           onClick={() => handleTypeChange('work')}
@@ -170,7 +170,7 @@ export default function PomodoroTimer({
             <button
               className={`px-5 py-2.5 rounded-[10px] font-medium border transition-all duration-250 max-md:px-3.5 max-md:py-2 max-md:text-sm ${
                 state.type === 'shortBreak'
-                  ? 'bg-emerald-400 text-white border-emerald-400 shadow-[0_2px_8px_rgba(52,211,153,0.3)]'
+                  ? 'bg-emerald-600 text-white border-emerald-600 dark:bg-emerald-400 dark:border-emerald-400 shadow-[0_2px_8px_rgba(52,211,153,0.3)]'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-transparent dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-[#2d2d44] hover:border-emerald-400/20 dark:hover:border-emerald-400/30 hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed'
               }`}
               onClick={() => handleTypeChange('shortBreak')}
@@ -181,7 +181,7 @@ export default function PomodoroTimer({
             <button
               className={`px-5 py-2.5 rounded-[10px] font-medium border transition-all duration-250 max-md:px-3.5 max-md:py-2 max-md:text-sm ${
                 state.type === 'longBreak'
-                  ? 'bg-emerald-400 text-white border-emerald-400 shadow-[0_2px_8px_rgba(52,211,153,0.3)]'
+                  ? 'bg-emerald-600 text-white border-emerald-600 dark:bg-emerald-400 dark:border-emerald-400 shadow-[0_2px_8px_rgba(52,211,153,0.3)]'
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-transparent dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-[#2d2d44] hover:border-emerald-400/20 dark:hover:border-emerald-400/30 hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed'
               }`}
               onClick={() => handleTypeChange('longBreak')}
@@ -221,10 +221,10 @@ export default function PomodoroTimer({
           />
         </svg>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-          <div className="text-5xl font-bold text-emerald-400 leading-none mb-2 max-md:text-4xl">
+          <div className="text-5xl font-bold text-emerald-700 dark:text-emerald-400 leading-none mb-2 max-md:text-4xl">
             {formatTimeFromSeconds(state.timeLeft)}
           </div>
-          <div className="text-base text-gray-500 uppercase tracking-wider max-md:text-sm">
+          <div className="text-base text-gray-600 dark:text-gray-400 uppercase tracking-wider max-md:text-sm">
             {state.type === 'work'
               ? t('pomodoro.work')
               : state.type === 'longBreak'
@@ -237,7 +237,7 @@ export default function PomodoroTimer({
       <div className="flex gap-4 justify-center flex-wrap max-md:gap-3">
         {!state.isRunning ? (
           <button
-            className="px-8 py-3 rounded-lg text-base font-semibold transition-all bg-emerald-400 text-white hover:bg-emerald-500 hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(52,211,153,0.35)] max-md:px-6 max-md:py-2.5 max-md:text-sm"
+            className="px-8 py-3 rounded-lg text-base font-semibold transition-all bg-emerald-600 text-white dark:bg-emerald-400 hover:bg-emerald-700 dark:hover:bg-emerald-500 hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(52,211,153,0.35)] max-md:px-6 max-md:py-2.5 max-md:text-sm"
             onClick={start}
           >
             {t('pomodoro.start')}
@@ -261,7 +261,7 @@ export default function PomodoroTimer({
 
       <div className="mt-4 flex justify-center">
         <button
-          className="px-4 py-2 rounded-lg text-sm font-medium bg-amber-500/10 text-amber-600 border border-amber-500/30 cursor-pointer transition-all hover:bg-amber-500/20 hover:border-amber-500/50 hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed"
+          className="px-4 py-2 rounded-lg text-sm font-medium bg-amber-500/10 text-amber-700 dark:text-amber-600 border border-amber-500/30 cursor-pointer transition-all hover:bg-amber-500/20 hover:border-amber-500/50 hover:-translate-y-px disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={resetAll}
           disabled={state.isRunning}
         >

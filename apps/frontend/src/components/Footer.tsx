@@ -18,7 +18,7 @@ export default function Footer() {
             href="https://dukerspace.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#34d399] font-semibold hover:underline"
+            className="text-emerald-700 dark:text-emerald-400 font-semibold hover:underline"
           >
             dukerspace
           </a>

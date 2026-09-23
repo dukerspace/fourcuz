@@ -190,7 +190,7 @@ export default function Tasks() {
                     e.stopPropagation()
                     handleCreateProject()
                   }}
-                  className="w-8 h-8 rounded-md bg-emerald-400 text-white border-none text-xl font-semibold cursor-pointer flex items-center justify-center transition-all flex-shrink-0 hover:bg-emerald-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-8 h-8 rounded-md bg-emerald-600 text-white dark:bg-emerald-400 border-none text-xl font-semibold cursor-pointer flex items-center justify-center transition-all flex-shrink-0 hover:bg-emerald-700 dark:hover:bg-emerald-500 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={!newProjectName.trim()}
                   title={t('tasks.createProject')}
                   type="button"
@@ -200,7 +200,7 @@ export default function Tasks() {
               </div>
 
               {projects.length === 0 ? (
-                <p className="text-base text-gray-500 dark:text-gray-400 text-center py-2">
+                <p className="text-base text-gray-600 dark:text-gray-400 text-center py-2">
                   {t('tasks.noProjects')}
                 </p>
               ) : (
@@ -239,7 +239,7 @@ export default function Tasks() {
                           <div className="flex gap-1">
                             <button
                               onClick={() => handleSaveEdit(project.id)}
-                              className="w-7 h-7 rounded-md text-sm border-none cursor-pointer flex items-center justify-center transition-all bg-emerald-400 text-white hover:bg-emerald-500 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="w-7 h-7 rounded-md text-sm border-none cursor-pointer flex items-center justify-center transition-all bg-emerald-600 text-white dark:bg-emerald-400 hover:bg-emerald-700 dark:hover:bg-emerald-500 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
                               disabled={!editName.trim()}
                               title={t('common.save')}
                             >
@@ -389,7 +389,7 @@ export default function Tasks() {
           <button
             className={`px-5 py-2.5 rounded-[10px] font-medium border transition-all duration-250 ${
               filter === 'all'
-                ? 'bg-emerald-400 text-white border-emerald-400 shadow-[0_2px_8px_rgba(102,126,234,0.3)]'
+                ? 'bg-emerald-600 text-white border-emerald-600 dark:bg-emerald-400 dark:border-emerald-400 shadow-[0_2px_8px_rgba(52,211,153,0.3)]'
                 : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-transparent dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-[#2d2d44] hover:border-emerald-400/20 dark:hover:border-emerald-400/30 hover:-translate-y-px'
             }`}
             onClick={() => setFilter('all')}
@@ -399,7 +399,7 @@ export default function Tasks() {
           <button
             className={`px-5 py-2.5 rounded-[10px] font-medium border transition-all duration-250 ${
               filter === 'active'
-                ? 'bg-emerald-400 text-white border-emerald-400 shadow-[0_2px_8px_rgba(102,126,234,0.3)]'
+                ? 'bg-emerald-600 text-white border-emerald-600 dark:bg-emerald-400 dark:border-emerald-400 shadow-[0_2px_8px_rgba(52,211,153,0.3)]'
                 : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-transparent dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-[#2d2d44] hover:border-emerald-400/20 dark:hover:border-emerald-400/30 hover:-translate-y-px'
             }`}
             onClick={() => setFilter('active')}
@@ -409,7 +409,7 @@ export default function Tasks() {
           <button
             className={`px-5 py-2.5 rounded-[10px] font-medium border transition-all duration-250 ${
               filter === 'completed'
-                ? 'bg-emerald-400 text-white border-emerald-400 shadow-[0_2px_8px_rgba(102,126,234,0.3)]'
+                ? 'bg-emerald-600 text-white border-emerald-600 dark:bg-emerald-400 dark:border-emerald-400 shadow-[0_2px_8px_rgba(52,211,153,0.3)]'
                 : 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border-transparent dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-[#2d2d44] hover:border-emerald-400/20 dark:hover:border-emerald-400/30 hover:-translate-y-px'
             }`}
             onClick={() => setFilter('completed')}
@@ -433,7 +433,7 @@ export default function Tasks() {
 
         <div className="bg-white/98 dark:bg-[rgba(30,30,46,0.95)] rounded-[20px] p-8 shadow-[0_2px_16px_rgba(0,0,0,0.08),0_1px_4px_rgba(0,0,0,0.04)] border border-black/4 dark:border-white/8 transition-all duration-300">
           {filteredTasks.length === 0 ? (
-            <div className="text-center py-12 text-gray-500 dark:text-gray-400">
+            <div className="text-center py-12 text-gray-600 dark:text-gray-400">
               <p className="text-base">{t('tasks.noTasks')}</p>
             </div>
           ) : (
