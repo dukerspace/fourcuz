@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useLanguageStore } from '../stores/languageStore'
 import { usePomodoroStore } from '../stores/pomodoroStore'
 import { useThemeStore } from '../stores/themeStore'
+import { clearLocalData } from '../utils/clearLocalData'
 
 type SettingsTab = 'general' | 'pomodoro' | 'alarm' | 'account' | 'premium' | 'about'
 
@@ -59,6 +60,12 @@ export default function Settings() {
     setSettings(defaultSettings)
     saveSettings(defaultSettings)
   }, [saveSettings])
+
+  const handleClearLocalData = useCallback(() => {
+    if (window.confirm(t('settings.clearLocalDataConfirm'))) {
+      clearLocalData()
+    }
+  }, [t])
 
   const timerOptions = [
     { value: 1, label: '1 Minute' },
@@ -306,16 +313,16 @@ export default function Settings() {
 
       <div className="mb-6 md:mb-8 lg:mb-10 last:mb-0">
         <h3 className="text-sm md:text-base lg:text-lg text-gray-900 dark:text-gray-100 mb-3 md:mb-4 lg:mb-6 font-semibold">
-          Appearance
+          {t('settings.appearance')}
         </h3>
         <div className="flex flex-col gap-4 md:gap-6">
           <div className="flex justify-between items-center py-3 md:py-4 border-b border-gray-200 dark:border-gray-700 last:border-b-0 gap-3">
             <div className="flex flex-col flex-1">
               <span className="text-sm md:text-base text-gray-900 dark:text-gray-100 font-medium">
-                Theme
+                {t('settings.theme')}
               </span>
               <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
-                Choose between light and dark mode
+                {t('settings.themeDescription')}
               </span>
             </div>
             <div className="flex gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1 flex-shrink-0">
@@ -327,7 +334,7 @@ export default function Settings() {
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
               >
-                Light
+                {t('settings.light')}
               </button>
               <button
                 onClick={() => setTheme('dark')}
@@ -337,7 +344,7 @@ export default function Settings() {
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200'
                 }`}
               >
-                Dark
+                {t('settings.dark')}
               </button>
             </div>
           </div>
@@ -346,12 +353,12 @@ export default function Settings() {
 
       <div className="mb-6 md:mb-8 lg:mb-10 last:mb-0">
         <h3 className="text-sm md:text-base lg:text-lg text-gray-900 dark:text-gray-100 mb-3 md:mb-4 lg:mb-6 font-semibold">
-          Language
+          {t('settings.language')}
         </h3>
         <div className="flex flex-col gap-4 md:gap-6">
           <div className="flex flex-col gap-2">
             <label className="text-sm text-gray-700 dark:text-gray-300 font-medium">
-              Select Language
+              {t('settings.selectLanguage')}
             </label>
             <select
               className="py-3 md:py-3.5 px-3 md:px-[18px] border-2 border-gray-200 dark:border-gray-700 rounded-[10px] text-sm md:text-base bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 cursor-pointer transition-all duration-250 appearance-none bg-[length:12px_12px] bg-[right_0.75rem_center] md:bg-[right_1rem_center] bg-no-repeat pr-8 md:pr-10 min-h-[44px] touch-manipulation hover:border-[#34d399] hover:bg-gray-50 dark:hover:bg-[#2d2d44] focus:outline-none focus:border-[#34d399] focus:shadow-[0_0_0_3px_rgba(52,211,153,0.12)]"
@@ -364,6 +371,31 @@ export default function Settings() {
               <option value="en">English</option>
               <option value="th">ไทย (Thai)</option>
             </select>
+          </div>
+        </div>
+      </div>
+
+      <div className="mb-6 md:mb-8 lg:mb-10 last:mb-0">
+        <h3 className="text-sm md:text-base lg:text-lg text-gray-900 dark:text-gray-100 mb-3 md:mb-4 lg:mb-6 font-semibold">
+          {t('settings.data')}
+        </h3>
+        <div className="flex flex-col gap-4 md:gap-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 py-3 md:py-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex flex-col flex-1">
+              <span className="text-sm md:text-base text-gray-900 dark:text-gray-100 font-medium">
+                {t('settings.clearLocalData')}
+              </span>
+              <span className="text-xs md:text-sm text-gray-500 dark:text-gray-400 mt-1">
+                {t('settings.clearLocalDataDescription')}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={handleClearLocalData}
+              className="w-full sm:w-auto py-3 md:py-3 px-6 md:px-8 bg-red-600 text-white border-none rounded-lg text-sm md:text-base font-semibold cursor-pointer transition-all duration-200 min-h-[44px] touch-manipulation hover:bg-red-700 hover:-translate-y-0.5 active:translate-y-0 flex-shrink-0"
+            >
+              {t('settings.clearLocalDataButton')}
+            </button>
           </div>
         </div>
       </div>

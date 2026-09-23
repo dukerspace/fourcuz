@@ -127,7 +127,7 @@ export default function TaskItem({
             e.stopPropagation()
             setShowEditModal(true)
           }}
-          aria-label="Edit task"
+          aria-label={t('common.editTask')}
         >
           ✎
         </button>
@@ -137,7 +137,7 @@ export default function TaskItem({
             e.stopPropagation()
             handleDeleteClick()
           }}
-          aria-label="Delete task"
+          aria-label={t('common.deleteTask')}
         >
           ×
         </button>

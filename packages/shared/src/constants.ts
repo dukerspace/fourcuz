@@ -22,4 +22,9 @@ export const STORAGE_KEYS = {
   POMODOROS: 'focus-todo-pomodoros',
   PROJECTS: 'focus-todo-projects',
   SETTINGS: 'focus-todo-settings',
+  TIMER: 'pomodoro-timer-state',
+  THEME: 'theme',
+  LANGUAGE: 'language',
+  LANGUAGE_STORAGE: 'language-storage',
+  MUSIC: 'music-state',
 } as const

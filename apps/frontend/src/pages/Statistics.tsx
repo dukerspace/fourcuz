@@ -548,9 +548,9 @@ export default function Statistics() {
               <button
                 className="px-3 md:px-4 py-2 md:py-2.5 bg-blue-500 text-white rounded-lg font-medium text-xs md:text-sm cursor-pointer transition-all hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-[0_4px_12px_rgba(0,0,0,0.2)]"
                 onClick={handleGenerateMockData}
-                title="Generate 100 mock tasks"
+                title={t('statistics.generateMockDataTitle')}
               >
-                Generate Mock Data
+                {t('statistics.generateMockData')}
               </button>
             )}
           <button

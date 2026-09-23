@@ -7,6 +7,10 @@ interface LanguageState {
   setLanguage: (lang: string) => void
 }
 
+function applyDocumentLang(lang: string) {
+  document.documentElement.lang = lang
+}
+
 export const useLanguageStore = create<LanguageState>()(
   persist(
     (set) => ({
@@ -14,6 +18,7 @@ export const useLanguageStore = create<LanguageState>()(
       setLanguage: (lang: string) => {
         i18n.changeLanguage(lang)
         localStorage.setItem('language', lang)
+        applyDocumentLang(lang)
         set({ language: lang })
       },
     }),

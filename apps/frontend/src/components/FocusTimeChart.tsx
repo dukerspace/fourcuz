@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { Task } from '@shared/types'
 
 type FilterType = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly' | 'Today'
@@ -14,7 +15,17 @@ export default function FocusTimeChart({
   workDuration,
   getProjectName: _getProjectName,
 }: FocusTimeChartProps) {
+  const { t, i18n } = useTranslation()
   const [filter, setFilter] = useState<FilterType>('Today')
+  const locale = i18n.language === 'th' ? 'th-TH' : 'en-US'
+
+  const filterLabels: Record<FilterType, string> = {
+    Daily: t('common.daily'),
+    Weekly: t('common.weekly'),
+    Monthly: t('common.monthly'),
+    Yearly: t('common.yearly'),
+    Today: t('common.today'),
+  }
 
   const formatTime = (minutes: number): string => {
     if (!Number.isFinite(minutes) || minutes < 0) return '0m'
@@ -157,26 +168,28 @@ export default function FocusTimeChart({
   const formatDateLabel = (date: Date, filterType: FilterType): string => {
     switch (filterType) {
       case 'Today':
-        return 'Today'
+        return t('common.today')
       case 'Daily':
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+        return date.toLocaleDateString(locale, { month: 'short', day: 'numeric' })
       case 'Weekly':
-        return `Week ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
+        return `${t('common.week')} ${date.toLocaleDateString(locale, { month: 'short', day: 'numeric' })}`
       case 'Monthly':
-        return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' })
+        return date.toLocaleDateString(locale, { month: 'short', year: 'numeric' })
       case 'Yearly':
         return date.getFullYear().toString()
       default:
-        return date.toLocaleDateString()
+        return date.toLocaleDateString(locale)
     }
   }
 
   return (
     <div className="w-full">
       <div className="mb-4">
-        <h3 className="text-gray-800 dark:text-gray-100 text-lg font-semibold">Focus Time</h3>
+        <h3 className="text-gray-800 dark:text-gray-100 text-lg font-semibold">
+          {t('statistics.focusTime')}
+        </h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-          Total focus time: {formatTime(totalTime)}
+          {t('statistics.totalFocusTime', { time: formatTime(totalTime) })}
         </p>
       </div>
 
@@ -191,7 +204,7 @@ export default function FocusTimeChart({
                 : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
             }`}
           >
-            {f}
+            {filterLabels[f]}
           </button>
         ))}
       </div>

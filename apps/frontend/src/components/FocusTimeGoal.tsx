@@ -1,5 +1,6 @@
 import type { Task } from '@shared/types'
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useSettingsStore } from '../stores/settingsStore'
 
 interface FocusTimeGoalProps {
@@ -8,11 +9,13 @@ interface FocusTimeGoalProps {
 }
 
 export default function FocusTimeGoal({ tasks, workDuration }: FocusTimeGoalProps) {
+  const { t, i18n } = useTranslation()
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [isEditingGoal, setIsEditingGoal] = useState(false)
   const [tempGoalValue, setTempGoalValue] = useState('')
   const goalHours = useSettingsStore((state) => state.focusTimeGoalHours)
   const setFocusTimeGoalHours = useSettingsStore((state) => state.setFocusTimeGoalHours)
+  const locale = i18n.language === 'th' ? 'th-TH' : 'en-US'
 
   // Calculate focus time by date
   const focusTimeByDate = useMemo(() => {
@@ -130,12 +133,21 @@ export default function FocusTimeGoal({ tasks, workDuration }: FocusTimeGoalProp
     })
   }
 
-  const weekDays = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su']
+  const weekDays = useMemo(() => {
+    const base = new Date(2024, 0, 1) // Monday
+    return Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(base)
+      d.setDate(base.getDate() + i)
+      return d.toLocaleDateString(locale, { weekday: 'short' })
+    })
+  }, [locale])
 
   return (
     <div className="bg-white/98 dark:bg-[rgba(30,30,46,0.95)] rounded-[20px] p-6 shadow-[0_2px_16px_rgba(0,0,0,0.08),0_1px_4px_rgba(0,0,0,0.04)] border border-black/4 dark:border-white/8">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-gray-800 dark:text-gray-100 text-lg font-semibold">Focus Time Goal</h3>
+        <h3 className="text-gray-800 dark:text-gray-100 text-lg font-semibold">
+          {t('statistics.focusTimeGoal')}
+        </h3>
         {!isEditingGoal ? (
           <button
             onClick={() => {
@@ -144,7 +156,7 @@ export default function FocusTimeGoal({ tasks, workDuration }: FocusTimeGoalProp
             }}
             className="px-3 py-1.5 text-xs bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
           >
-            Goal: {goalHours}H
+            {t('statistics.goalHours', { hours: goalHours })}
           </button>
         ) : (
           <div className="flex items-center gap-2">
@@ -180,19 +192,19 @@ export default function FocusTimeGoal({ tasks, workDuration }: FocusTimeGoalProp
 
       <div className="mb-4 space-y-1">
         <div className="text-sm text-gray-600 dark:text-gray-400">
-          Focus Days:{' '}
+          {t('statistics.focusDays')}{' '}
           <span className="font-semibold text-gray-800 dark:text-gray-200">{stats.focusDays}</span>{' '}
-          days
+          {t('common.days')}
         </div>
         <div className="text-sm text-gray-600 dark:text-gray-400">
-          Completed Goal Days:{' '}
+          {t('statistics.completedGoalDays')}{' '}
           <span className="font-semibold text-gray-800 dark:text-gray-200">
             {stats.completedGoalDays}
           </span>{' '}
-          days
+          {t('common.days')}
         </div>
         <div className="text-sm text-gray-600 dark:text-gray-400">
-          Goal Completion Rate:{' '}
+          {t('statistics.goalCompletionRate')}{' '}
           <span className="font-semibold text-gray-800 dark:text-gray-200">
             {stats.goalCompletionRate}%
           </span>
@@ -208,7 +220,7 @@ export default function FocusTimeGoal({ tasks, workDuration }: FocusTimeGoalProp
             ←
           </button>
           <h4 className="text-base font-semibold text-gray-800 dark:text-gray-100">
-            {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            {currentMonth.toLocaleDateString(locale, { month: 'long', year: 'numeric' })}
           </h4>
           <button
             onClick={() => changeMonth('next')}

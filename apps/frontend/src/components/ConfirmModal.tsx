@@ -1,4 +1,5 @@
 import { createPortal } from 'react-dom'
+import { useTranslation } from 'react-i18next'
 
 interface ConfirmModalProps {
   isOpen: boolean
@@ -15,12 +16,16 @@ export default function ConfirmModal({
   isOpen,
   title,
   message,
-  confirmText = 'Confirm',
-  cancelText = 'Cancel',
+  confirmText,
+  cancelText,
   onConfirm,
   onCancel,
   variant = 'default',
 }: ConfirmModalProps) {
+  const { t } = useTranslation()
+  const resolvedConfirmText = confirmText ?? t('common.confirm')
+  const resolvedCancelText = cancelText ?? t('common.cancel')
+
   if (!isOpen) return null
 
   return createPortal(
@@ -53,7 +58,7 @@ export default function ConfirmModal({
             className="px-6 py-3 rounded-lg font-medium text-base cursor-pointer transition-all bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400 border-none hover:bg-gray-300 dark:hover:bg-gray-600"
             onClick={onCancel}
           >
-            {cancelText}
+            {resolvedCancelText}
           </button>
           <button
             className={`px-6 py-3 rounded-lg font-medium text-base cursor-pointer transition-all border-none ${
@@ -63,7 +68,7 @@ export default function ConfirmModal({
             }`}
             onClick={onConfirm}
           >
-            {confirmText}
+            {resolvedConfirmText}
           </button>
         </div>
       </div>

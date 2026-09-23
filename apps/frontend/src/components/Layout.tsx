@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
+import { useLanguageStore } from '../stores/languageStore'
 import CompactTimer from './CompactTimer'
 import Footer from './Footer'
 
@@ -11,6 +12,7 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   const location = useLocation()
   const { theme, toggleTheme } = useTheme()
+  const { language, setLanguage } = useLanguageStore()
   const { t } = useTranslation()
 
   return (
@@ -47,10 +49,40 @@ export default function Layout({ children }: LayoutProps) {
             {t('common.settings')}
           </Link>
           <CompactTimer />
+          <div
+            className="flex bg-gray-100 dark:bg-gray-800 rounded-lg p-0.5"
+            role="group"
+            aria-label={t('settings.language')}
+          >
+            <button
+              type="button"
+              onClick={() => setLanguage('en')}
+              className={`px-2.5 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 ${
+                language === 'en'
+                  ? 'bg-white dark:bg-gray-700 text-[#34d399] shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+              }`}
+              aria-pressed={language === 'en'}
+            >
+              EN
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage('th')}
+              className={`px-2.5 py-1.5 text-xs font-semibold rounded-md transition-all duration-200 ${
+                language === 'th'
+                  ? 'bg-white dark:bg-gray-700 text-[#34d399] shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+              }`}
+              aria-pressed={language === 'th'}
+            >
+              TH
+            </button>
+          </div>
           <button
             className="p-2 bg-transparent border-none text-xl cursor-pointer rounded-lg transition-all duration-200 hover:bg-[rgba(52,211,153,0.1)]"
             onClick={toggleTheme}
-            aria-label="Toggle theme"
+            aria-label={t('common.toggleTheme')}
           >
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>

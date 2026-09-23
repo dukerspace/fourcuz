@@ -113,7 +113,7 @@ export default function TaskEditModal({ task, onClose, onSave }: TaskEditModalPr
 
             <div className="flex flex-col gap-2">
               <label className="font-medium text-gray-600 dark:text-gray-400 text-sm">
-                Due Date
+                {t('common.dueDate')}
               </label>
               <input
                 type="date"

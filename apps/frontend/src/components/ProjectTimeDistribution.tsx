@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { Task } from '@shared/types'
 
 type FilterType = 'Daily' | 'Weekly' | 'Monthly' | 'Yearly' | 'Today'
@@ -14,7 +15,16 @@ export default function ProjectTimeDistribution({
   workDuration,
   getProjectName,
 }: ProjectTimeDistributionProps) {
+  const { t } = useTranslation()
   const [filter, setFilter] = useState<FilterType>('Today')
+
+  const filterLabels: Record<FilterType, string> = {
+    Daily: t('common.daily'),
+    Weekly: t('common.weekly'),
+    Monthly: t('common.monthly'),
+    Yearly: t('common.yearly'),
+    Today: t('common.today'),
+  }
 
   const formatTime = (minutes: number): string => {
     if (!Number.isFinite(minutes) || minutes < 0) return '0m'
@@ -106,11 +116,11 @@ export default function ProjectTimeDistribution({
 
   return (
     <div className="bg-white/98 dark:bg-[rgba(30,30,46,0.95)] rounded-[20px] p-6 shadow-[0_2px_16px_rgba(0,0,0,0.08),0_1px_4px_rgba(0,0,0,0.04)] border border-black/4 dark:border-white/8">
-      <div className="flex justify-between items-center mb-4">
+      <div className="flex justify-between items-center mb-4 flex-wrap gap-2">
         <h3 className="text-gray-800 dark:text-gray-100 text-lg font-semibold">
-          Project Time Distribution
+          {t('statistics.projectTimeDistribution')}
         </h3>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           {(['Daily', 'Weekly', 'Monthly', 'Yearly', 'Today'] as FilterType[]).map((f) => (
             <button
               key={f}
@@ -121,14 +131,16 @@ export default function ProjectTimeDistribution({
                   : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
               }`}
             >
-              {f}
+              {filterLabels[f]}
             </button>
           ))}
         </div>
       </div>
 
       {projectData.entries.length === 0 ? (
-        <div className="text-center py-8 text-gray-500 dark:text-gray-400">No data available</div>
+        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+          {t('common.noDataAvailable')}
+        </div>
       ) : (
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <div className="relative shrink-0">
@@ -193,7 +205,7 @@ export default function ProjectTimeDistribution({
             ))}
             {projectData.entries.length === 0 && (
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                {formatTime(projectData.total)} No Project
+                {formatTime(projectData.total)} {t('statistics.noProject')}
               </div>
             )}
           </div>

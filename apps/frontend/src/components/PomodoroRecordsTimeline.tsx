@@ -1,5 +1,6 @@
 import type { Task } from '@shared/types'
 import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface PomodoroRecordsTimelineProps {
   tasks: Task[]
@@ -10,6 +11,9 @@ export default function PomodoroRecordsTimeline({
   tasks,
   workDuration: _workDuration,
 }: PomodoroRecordsTimelineProps) {
+  const { t, i18n } = useTranslation()
+  const locale = i18n.language === 'th' ? 'th-TH' : 'en-US'
+
   // Generate dates for the last 10 days
   const dates = useMemo(() => {
     const datesList = []
@@ -61,12 +65,12 @@ export default function PomodoroRecordsTimeline({
     const dateOnly = new Date(date.getFullYear(), date.getMonth(), date.getDate())
 
     if (dateOnly.getTime() === today.getTime()) {
-      return 'Today'
+      return t('common.today')
     }
     if (dateOnly.getTime() === yesterday.getTime()) {
-      return 'Yesterday'
+      return t('common.yesterday')
     }
-    return `${date.getDate()} ${date.toLocaleString('en-US', { month: 'short' })}`
+    return `${date.getDate()} ${date.toLocaleString(locale, { month: 'short' })}`
   }
 
   const getSessionCount = (date: Date, hour: number): number => {
@@ -93,7 +97,7 @@ export default function PomodoroRecordsTimeline({
   return (
     <div className="bg-white/98 dark:bg-[rgba(30,30,46,0.95)] rounded-[20px] p-6 shadow-[0_2px_16px_rgba(0,0,0,0.08),0_1px_4px_rgba(0,0,0,0.04)] border border-black/4 dark:border-white/8">
       <h3 className="text-gray-800 dark:text-gray-100 mb-4 text-lg font-semibold">
-        Pomodoro Records
+        {t('statistics.pomodoroRecords')}
       </h3>
       <div className="overflow-x-auto -mx-2 px-2 max-h-[600px] overflow-y-auto">
         <div className="inline-block min-w-full">
@@ -132,7 +136,11 @@ export default function PomodoroRecordsTimeline({
                       <div
                         key={`${date.toISOString()}-${hour}`}
                         className="h-4 relative group cursor-pointer flex items-end"
-                        title={count > 0 ? `${count} pomodoro(s) at ${hour}:00` : ''}
+                        title={
+                          count > 0
+                            ? t('statistics.pomodoroAtHour', { count, hour })
+                            : ''
+                        }
                       >
                         {count > 0 && (
                           <div
