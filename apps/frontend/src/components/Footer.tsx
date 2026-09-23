@@ -14,7 +14,14 @@ export default function Footer() {
           <span>{t('footer.madeWith')}</span>
           <span className="text-red-500">❤️</span>
           <span>{t('footer.by')}</span>
-          <span className="text-[#34d399] font-semibold">Fourcuz</span>
+          <a
+            href="https://dukerspace.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#34d399] font-semibold hover:underline"
+          >
+            dukerspace
+          </a>
         </div>
       </div>
     </footer>

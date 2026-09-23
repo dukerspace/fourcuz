@@ -1,6 +1,6 @@
 import { PomodoroType } from '@shared/types'
 import { createContext, ReactNode, useCallback, useContext, useEffect, useRef } from 'react'
-import { useMusicStore } from '../stores/musicStore'
+import { useTranslation } from 'react-i18next'
 import { usePomodoroStore } from '../stores/pomodoroStore'
 import { useTasksStore } from '../stores/tasksStore'
 
@@ -31,7 +31,75 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
   const store = usePomodoroStore()
   const tasks = useTasksStore((state) => state.tasks)
   const updateTask = useTasksStore((state) => state.updateTask)
-  const musicStore = useMusicStore()
+  const { t } = useTranslation()
+
+  // Request notification permission on mount
+  useEffect(() => {
+    if ('Notification' in window) {
+      if (Notification.permission === 'default') {
+        Notification.requestPermission().catch((error) => {
+          console.warn(t('pomodoro.notificationPermissionRequestFailed'), error)
+        })
+      }
+    }
+  }, [t])
+
+  // Show browser native notification using Web Notifications API
+  const showBrowserNotification = useCallback(
+    (title: string, body: string, tag: string, options?: NotificationOptions) => {
+      // Check if Web Notifications API is supported
+      if (!('Notification' in window)) {
+        console.warn(t('pomodoro.notificationNotSupported'))
+        return
+      }
+
+      // Check if permission is granted
+      if (Notification.permission !== 'granted') {
+        // Try to request permission if not denied
+        if (Notification.permission === 'default') {
+          Notification.requestPermission().then((permission) => {
+            if (permission === 'granted') {
+              showBrowserNotification(title, body, tag, options)
+            }
+          }).catch(() => {
+            console.warn(t('pomodoro.notificationPermissionRequestFailed'))
+          })
+        }
+        return
+      }
+
+      try {
+        const notification = new Notification(title, {
+          body,
+          tag, // Prevents duplicate notifications with the same tag
+          icon: '/vite.svg',
+          badge: '/vite.svg',
+          requireInteraction: false,
+          silent: !store.settings.soundEnabled, // Silent if sound is disabled
+          ...options,
+        })
+
+        // Handle notification click - focus the window
+        notification.onclick = () => {
+          window.focus()
+          notification.close()
+        }
+
+        // Handle notification errors
+        notification.onerror = (error) => {
+          console.error(t('pomodoro.notificationError'), error)
+        }
+
+        // Auto-close notification after 5 seconds if not interacted with
+        setTimeout(() => {
+          notification.close()
+        }, 5000)
+      } catch (error) {
+        console.error(t('pomodoro.notificationError'), error)
+      }
+    },
+    [store.settings.soundEnabled, t]
+  )
 
   // Create state object from store for context compatibility
   const state: PomodoroState = {
@@ -47,6 +115,19 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const onCompleteCallbackRef = useRef<(() => void) | null>(null)
+  const handleCompleteRef = useRef<((completedState: PomodoroState) => Promise<void>) | null>(null)
+
+  // Helper to get duration for timer type
+  const getDurationForType = (timerType: PomodoroType, settings: typeof store.settings): number => {
+    switch (timerType) {
+      case 'work':
+        return settings.workDuration
+      case 'shortBreak':
+        return settings.shortBreakDuration
+      case 'longBreak':
+        return settings.longBreakDuration
+    }
+  }
 
   // Keep timer duration aligned when settings change
   useEffect(() => {
@@ -64,33 +145,18 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
       return
     }
 
-    // Update timer duration if not running and type matches
-    const getDurationForType = (timerType: PomodoroType): number => {
-      switch (timerType) {
-        case 'work':
-          return settings.workDuration
-        case 'shortBreak':
-          return settings.shortBreakDuration
-        case 'longBreak':
-          return settings.longBreakDuration
-      }
-    }
-
-    // Only update timeLeft if timer is not running
-    // Only reset to full duration if timer hasn't been started (timeLeft == full duration)
-    // or if timer completed (timeLeft == 0)
-    // This prevents resetting the time when pausing (when timeLeft is between 0 and full duration)
+    // Update timer duration if not running
+    // Only reset to full duration if timer hasn't been started or completed
+    // This prevents resetting the time when pausing
     if (!currentState.isRunning) {
-      const desiredTimeLeft = getDurationForType(currentState.type) * 60
-      // Only update if timer is at initial state (hasn't been started) or completed
-      // Don't reset if the timer was paused (timeLeft is between 0 and full duration)
-      if (currentState.timeLeft === desiredTimeLeft || currentState.timeLeft === 0) {
-        // Timer is at initial state or completed, safe to update when settings change
-        if (currentState.timeLeft !== desiredTimeLeft) {
-          store.setTimeLeft(desiredTimeLeft)
-        }
+      const desiredTimeLeft = getDurationForType(currentState.type, settings) * 60
+      // Only update if timer is at initial state or completed (not paused)
+      if (
+        (currentState.timeLeft === desiredTimeLeft || currentState.timeLeft === 0) &&
+        currentState.timeLeft !== desiredTimeLeft
+      ) {
+        store.setTimeLeft(desiredTimeLeft)
       }
-      // If timeLeft is between 0 and desiredTimeLeft, don't touch it (timer was paused)
     }
   }, [
     store.settings.workDuration,
@@ -107,12 +173,14 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
       intervalRef.current = setInterval(() => {
         const currentState = store
         if (currentState.timeLeft <= 1) {
-          // Trigger completion handler
-          setTimeout(() => {
-            handleComplete(currentState)
-          }, 0)
+          // Trigger completion handler - use ref to ensure latest version
           store.setTimeLeft(0)
           store.pause()
+          setTimeout(() => {
+            if (handleCompleteRef.current) {
+              handleCompleteRef.current(currentState)
+            }
+          }, 0)
         } else {
           store.decrementTime()
         }
@@ -138,170 +206,106 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  const playBreakSound = () => {
+  // Helper to create and play a chord sound
+  const playChordSound = (
+    chordNotes: number[],
+    duration: number,
+    filterFreq: number,
+    noteGain: number,
+    detuneMultiplier: number
+  ) => {
     if (!store.settings.soundEnabled) return
 
-    // Pause LofiMusic if it's playing
-    const wasMusicPlaying = musicStore.isPlaying
-    if (wasMusicPlaying) {
-      musicStore.toggle() // This will pause the music
-    }
-
     try {
-      // Use Web Audio API to create a lofi chord sound (3 seconds total)
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-
-      // Lofi chord: C major 7th chord (C, E, G, B) - soft and mellow
-      // Using lower frequencies for a warmer, more mellow sound
-      const chordNotes = [
-        261.63, // C4
-        329.63, // E4
-        392.0, // G4
-        493.88, // B4
-      ]
-
-      const duration = 3.0 // 3 seconds total
       const startTime = audioContext.currentTime
-
-      // Create master gain for overall volume control
       const masterGain = audioContext.createGain()
+
       masterGain.connect(audioContext.destination)
       masterGain.gain.setValueAtTime(0.25, startTime)
 
-      // Play all notes simultaneously as a chord with slight detuning for lofi character
       chordNotes.forEach((frequency, index) => {
-        // Slight detuning for each note to create a more organic, lofi sound
-        const detuneAmount = (index - 1.5) * 2 // Small detuning in cents
+        const detuneAmount = (index - 1) * detuneMultiplier
         const detunedFreq = frequency * Math.pow(2, detuneAmount / 1200)
 
         const oscillator = audioContext.createOscillator()
         const gainNode = audioContext.createGain()
         const biquadFilter = audioContext.createBiquadFilter()
 
-        // Use triangle wave for softer, warmer sound (more lofi)
         oscillator.type = 'triangle'
         oscillator.frequency.value = detunedFreq
-
-        // Apply low-pass filter for that characteristic lofi sound (warmth)
         biquadFilter.type = 'lowpass'
-        biquadFilter.frequency.value = 2000 // Cut high frequencies for warmth
+        biquadFilter.frequency.value = filterFreq
         biquadFilter.Q.value = 1
 
         oscillator.connect(biquadFilter)
         biquadFilter.connect(gainNode)
         gainNode.connect(masterGain)
 
-        // Soft attack and decay for a mellow chord
-        const noteGain = 0.15 / chordNotes.length // Distribute volume across notes
+        const attackTime = duration === 3.0 ? 0.1 : 0.2
+        const sustainEnd = duration === 3.0 ? duration - 0.3 : duration - 0.5
+
         gainNode.gain.setValueAtTime(0, startTime)
-        gainNode.gain.linearRampToValueAtTime(noteGain, startTime + 0.1) // Soft attack
-        gainNode.gain.setValueAtTime(noteGain, startTime + duration - 0.3)
-        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration) // Soft decay
+        gainNode.gain.linearRampToValueAtTime(noteGain, startTime + attackTime)
+        gainNode.gain.setValueAtTime(noteGain, startTime + sustainEnd)
+        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration)
 
         oscillator.start(startTime)
         oscillator.stop(startTime + duration)
       })
-
-      // Resume LofiMusic after 3 seconds if it was playing
-      if (wasMusicPlaying) {
-        setTimeout(() => {
-          if (!musicStore.isPlaying) {
-            musicStore.toggle() // Resume the music
-          }
-        }, 3000)
-      }
     } catch (error) {
-      console.error('Failed to play break sound:', error)
-      // Resume music even if sound fails
-      if (wasMusicPlaying && !musicStore.isPlaying) {
-        musicStore.toggle()
-      }
+      console.error('Failed to play sound:', error)
     }
+  }
+
+  const playBreakSound = () => {
+    playChordSound(
+      [261.63, 329.63, 392.0, 493.88], // C major 7th chord
+      3.0,
+      2000,
+      0.15 / 4,
+      2
+    )
   }
 
   const playLongBreakSound = () => {
-    if (!store.settings.soundEnabled) return
+    playChordSound(
+      [220.0, 261.63, 329.63], // A minor chord
+      5.0,
+      1800,
+      0.18 / 3,
+      3
+    )
+  }
 
-    // Pause LofiMusic if it's playing
-    const wasMusicPlaying = musicStore.isPlaying
-    if (wasMusicPlaying) {
-      musicStore.toggle() // This will pause the music
+  // Helper to get notification content based on timer type
+  const getNotificationContent = (type: PomodoroType) => {
+    const notifications = {
+      work: {
+        title: t('pomodoro.workTimeUp'),
+        body: t('pomodoro.workTimeUpBody'),
+        tag: 'pomodoro-work-complete',
+      },
+      shortBreak: {
+        title: t('pomodoro.shortBreakTimeUp'),
+        body: t('pomodoro.shortBreakTimeUpBody'),
+        tag: 'pomodoro-short-break-complete',
+      },
+      longBreak: {
+        title: t('pomodoro.longBreakTimeUp'),
+        body: t('pomodoro.longBreakTimeUpBody'),
+        tag: 'pomodoro-long-break-complete',
+      },
     }
-
-    try {
-      // Use Web Audio API to create a riptide chord sound (5 seconds total)
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
-
-      // Riptide chord: A minor chord (A, C, E) - characteristic of the riptide progression
-      // Using warmer frequencies for a more mellow, relaxing sound
-      const chordNotes = [
-        220.0, // A3
-        261.63, // C4
-        329.63, // E4
-      ]
-
-      const duration = 5.0 // 5 seconds total
-      const startTime = audioContext.currentTime
-
-      // Create master gain for overall volume control
-      const masterGain = audioContext.createGain()
-      masterGain.connect(audioContext.destination)
-      masterGain.gain.setValueAtTime(0.25, startTime)
-
-      // Play all notes simultaneously as a chord with slight detuning for lofi character
-      chordNotes.forEach((frequency, index) => {
-        // Slight detuning for each note to create a more organic, lofi sound
-        const detuneAmount = (index - 1) * 3 // Small detuning in cents for warmth
-        const detunedFreq = frequency * Math.pow(2, detuneAmount / 1200)
-
-        const oscillator = audioContext.createOscillator()
-        const gainNode = audioContext.createGain()
-        const biquadFilter = audioContext.createBiquadFilter()
-
-        // Use triangle wave for softer, warmer sound (more lofi)
-        oscillator.type = 'triangle'
-        oscillator.frequency.value = detunedFreq
-
-        // Apply low-pass filter for that characteristic lofi sound (warmth)
-        biquadFilter.type = 'lowpass'
-        biquadFilter.frequency.value = 1800 // Slightly lower for more warmth
-        biquadFilter.Q.value = 1
-
-        oscillator.connect(biquadFilter)
-        biquadFilter.connect(gainNode)
-        gainNode.connect(masterGain)
-
-        // Soft attack and long sustain for a mellow riptide chord
-        const noteGain = 0.18 / chordNotes.length // Distribute volume across notes
-        gainNode.gain.setValueAtTime(0, startTime)
-        gainNode.gain.linearRampToValueAtTime(noteGain, startTime + 0.2) // Gentle attack
-        gainNode.gain.setValueAtTime(noteGain, startTime + duration - 0.5)
-        gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration) // Long, soft decay
-
-        oscillator.start(startTime)
-        oscillator.stop(startTime + duration)
-      })
-
-      // Resume LofiMusic after 5 seconds if it was playing
-      if (wasMusicPlaying) {
-        setTimeout(() => {
-          if (!musicStore.isPlaying) {
-            musicStore.toggle() // Resume the music
-          }
-        }, 5000)
-      }
-    } catch (error) {
-      console.error('Failed to play long break sound:', error)
-      // Resume music even if sound fails
-      if (wasMusicPlaying && !musicStore.isPlaying) {
-        musicStore.toggle()
-      }
-    }
+    return notifications[type]
   }
 
   const handleComplete = async (completedState: PomodoroState) => {
+    // Show notification when timer ends
+    const notification = getNotificationContent(completedState.type)
+    showBrowserNotification(notification.title, notification.body, notification.tag)
+
     // Record pomodoro locally
     if (completedState.type === 'work' && completedState.selectedTaskId) {
       const task = tasks.find((t) => t.id === completedState.selectedTaskId)
@@ -323,77 +327,71 @@ export function PomodoroProvider({ children }: { children: ReactNode }) {
       const newWorkSessionsCompleted = completedState.workSessionsCompleted + 1
       store.setWorkSessionsCompleted(newWorkSessionsCompleted)
 
-      // Skip breaks if disabled
       if (completedState.settings.disableBreak) {
+        // Skip breaks if disabled
         store.setType('work')
-        store.setTimeLeft(completedState.settings.workDuration * 60)
+        store.setTimeLeft(getDurationForType('work', completedState.settings) * 60)
         store.pause()
         if (completedState.settings.autoStartPomodoros) {
           store.start()
         }
       } else {
+        // Determine next break type
         const nextType =
           newWorkSessionsCompleted >= completedState.settings.longBreakInterval
             ? 'longBreak'
             : 'shortBreak'
 
-        const getDurationForTypeLocal = (timerType: PomodoroType): number => {
-          switch (timerType) {
-            case 'work':
-              return completedState.settings.workDuration
-            case 'shortBreak':
-              return completedState.settings.shortBreakDuration
-            case 'longBreak':
-              return completedState.settings.longBreakDuration
-          }
-        }
-
         store.setType(nextType)
-        store.setTimeLeft(getDurationForTypeLocal(nextType) * 60)
+        store.setTimeLeft(getDurationForType(nextType, completedState.settings) * 60)
         store.pause()
+
         if (completedState.settings.autoStartBreaks) {
           store.start()
         }
 
         // Play break sound when break starts
         if (completedState.settings.soundEnabled) {
-          if (nextType === 'longBreak') {
-            setTimeout(() => playLongBreakSound(), 100)
-          } else {
-            setTimeout(() => playBreakSound(), 100)
-          }
+          setTimeout(
+            () => (nextType === 'longBreak' ? playLongBreakSound() : playBreakSound()),
+            100
+          )
         }
       }
     } else {
       // Break completed - transition back to work
-      // Reset work sessions after long break
       const shouldReset = completedState.type === 'longBreak'
 
       store.setType('work')
-      store.setTimeLeft(completedState.settings.workDuration * 60)
+      store.setTimeLeft(getDurationForType('work', completedState.settings) * 60)
       if (shouldReset) {
         store.setWorkSessionsCompleted(0)
       }
       store.pause()
+
       if (completedState.settings.autoStartPomodoros) {
         store.start()
       }
 
-      // Play sound when break ends (time to get back to work)
+      // Play sound when break ends
       if (completedState.settings.soundEnabled) {
-        if (completedState.type === 'shortBreak') {
-          // Play break sound when short break ends
-          setTimeout(() => playBreakSound(), 100)
-        } else if (completedState.type === 'longBreak') {
-          // Play long break sound when long break ends
-          setTimeout(() => playLongBreakSound(), 100)
-        } else {
-          // Fallback to notification sound
-          setTimeout(() => playNotificationSound(), 100)
-        }
+        setTimeout(() => {
+          if (completedState.type === 'shortBreak') {
+            playBreakSound()
+          } else if (completedState.type === 'longBreak') {
+            playLongBreakSound()
+          } else {
+            playNotificationSound()
+          }
+        }, 100)
       }
     }
   }
+
+  // Update ref whenever handleComplete dependencies change
+  useEffect(() => {
+    handleCompleteRef.current = handleComplete
+  }, [handleComplete, showBrowserNotification, t, tasks, updateTask, store])
 
   const start = () => {
     store.start()

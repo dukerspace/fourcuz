@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom'
 import { useTheme } from '../hooks/useTheme'
 import CompactTimer from './CompactTimer'
 import Footer from './Footer'
-import LofiMusic from './LofiMusic'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -48,7 +47,6 @@ export default function Layout({ children }: LayoutProps) {
             {t('common.settings')}
           </Link>
           <CompactTimer />
-          <LofiMusic />
           <button
             className="p-2 bg-transparent border-none text-xl cursor-pointer rounded-lg transition-all duration-200 hover:bg-[rgba(52,211,153,0.1)]"
             onClick={toggleTheme}

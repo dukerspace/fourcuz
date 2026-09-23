@@ -137,7 +137,6 @@ bun clean
   - Settings persistence
 
 - ✅ **Additional Features**
-  - Lofi music player (YouTube integration)
   - Browser notifications for reminders
   - Offline storage support
   - Responsive design (mobile, tablet, desktop)

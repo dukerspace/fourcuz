@@ -67,7 +67,17 @@
     "reset": "รีเซ็ต",
     "resetAll": "รีเซ็ตทั้งหมด",
     "round": "รอบ",
-    "of": "จาก"
+    "of": "จาก",
+    "workTimeUp": "หมดเวลาแล้ว!",
+    "workTimeUpBody": "ทำได้ดีมาก! ถึงเวลาพักแล้ว",
+    "shortBreakTimeUp": "พักสั้นเสร็จแล้ว!",
+    "shortBreakTimeUpBody": "พร้อมกลับมาทำงานต่อไหม?",
+    "longBreakTimeUp": "พักยาวเสร็จแล้ว!",
+    "longBreakTimeUpBody": "คุณได้พักผ่อนอย่างเต็มที่แล้ว ถึงเวลามาโฟกัสกันต่อ!",
+    "notificationNotSupported": "เบราว์เซอร์นี้ไม่รองรับ Web Notifications API",
+    "notificationPermissionDenied": "การอนุญาตการแจ้งเตือนถูกปฏิเสธ กรุณาเปิดใช้งานในการตั้งค่าเบราว์เซอร์",
+    "notificationPermissionRequestFailed": "ไม่สามารถขออนุญาตการแจ้งเตือนได้",
+    "notificationError": "ไม่สามารถแสดงการแจ้งเตือนได้"
   },
   "statistics": {
     "title": "สถิติ",

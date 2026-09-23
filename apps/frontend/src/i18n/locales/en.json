@@ -67,7 +67,17 @@
     "reset": "Reset",
     "resetAll": "Reset All",
     "round": "Round",
-    "of": "of"
+    "of": "of",
+    "workTimeUp": "Work time is up!",
+    "workTimeUpBody": "Great job! Time for a break.",
+    "shortBreakTimeUp": "Short break is over!",
+    "shortBreakTimeUpBody": "Ready to get back to work?",
+    "longBreakTimeUp": "Long break is over!",
+    "longBreakTimeUpBody": "You've earned a well-deserved rest. Time to refocus!",
+    "notificationNotSupported": "This browser does not support the Web Notifications API",
+    "notificationPermissionDenied": "Notification permission is denied. Please enable it in your browser settings.",
+    "notificationPermissionRequestFailed": "Failed to request notification permission",
+    "notificationError": "Failed to show notification"
   },
   "statistics": {
     "title": "Statistics",
